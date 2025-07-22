@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula Gratuita: O Jogo da Autoridade - 29/07 às 19:30</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Urgency Banner */
+        .urgency-banner {
+            background: linear-gradient(90deg, #ff3333, #ff6b35);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 14px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            box-shadow: 0 2px 10px rgba(255, 51, 51, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2c2c2c 50%, #1a1a1a 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(255, 165, 0, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(255, 107, 53, 0.12) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(255, 140, 0, 0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-content {
+            color: white;
+            animation: slideInLeft 1s ease-out;
+        }
+
+        .live-badge {
+            background: linear-gradient(45deg, #ff3333, #ff6b35);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(255, 51, 51, 0.3);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        .hero-title {
+            font-size: clamp(2.2rem, 6vw, 3.5rem);
+            font-weight: 800;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+            color: #ffa500;
+            line-height: 1.2;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.1rem, 3vw, 1.4rem);
+            margin-bottom: 30px;
+            opacity: 0.95;
+            line-height: 1.5;
+        }
+
+        .date-time-box {
+            background: rgba(255, 165, 0, 0.1);
+            border: 2px solid #ffa500;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 30px 0;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .date-time {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #ffa500;
+            margin-bottom: 10px;
+        }
+
+        .timezone {
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+
+        /* Form Section */
+        .form-container {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 165, 0, 0.2);
+            animation: slideInRight 1s ease-out;
+        }
+
+        .form-title {
+            color: white;
+            font-size: 1.8rem;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid rgba(255, 165, 0, 0.3);
+            border-radius: 10px;
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #ffa500;
+            box-shadow: 0 0 20px rgba(255, 165, 0, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .form-input::placeholder {
+            color: #666;
+        }
+
+        .cta-button {
+            width: 100%;
+            background: linear-gradient(45deg, #ff6b35, #ffa500);
+            color: white;
+            padding: 18px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 107, 53, 0.5);
+            background: linear-gradient(45deg, #ffa500, #ffb84d);
+        }
+
+        .security-note {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            opacity: 0.8;
+            color: white;
+        }
+
+        /* Benefits Section */
+        .benefits-section {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: 80px 0;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .benefit-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .benefit-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border-color: #ffa500;
+        }
+
+        .benefit-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(45deg, #ff6b35, #ffa500);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #2c2c2c;
+            font-weight: 700;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.3rem;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto 50px;
+        }
+
+        /* Countdown Timer */
+        .countdown-section {
+            background: linear-gradient(45deg, #ff6b35, #ffa500);
+            padding: 60px 0;
+            color: white;
+            text-align: center;
+        }
+
+        .countdown-container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .countdown-item {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 20px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            min-width: 100px;
+        }
+
+        .countdown-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            display: block;
+        }
+
+        .countdown-label {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Social Proof */
+        .social-proof {
+            background: #2c2c2c;
+            padding: 80px 0;
+            color: white;
+            text-align: center;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-top: 50px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #ffa500;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* Floating Elements */
+        .floating-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .floating-icon {
+            position: absolute;
+            color: rgba(255, 165, 0, 0.1);
+            font-size: 2rem;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .floating-icon:nth-child(1) { top: 10%; left: 10%; animation-delay: 0s; }
+        .floating-icon:nth-child(2) { top: 20%; right: 15%; animation-delay: 2s; }
+        .floating-icon:nth-child(3) { bottom: 30%; left: 20%; animation-delay: 4s; }
+        .floating-icon:nth-child(4) { bottom: 20%; right: 10%; animation-delay: 1s; }
+        .floating-icon:nth-child(5) { top: 50%; left: 5%; animation-delay: 3s; }
+
+        /* Animations */
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-30px) rotate(10deg); }
+            66% { transform: translateY(15px) rotate(-5deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        @keyframes glow {
+            from { box-shadow: 0 4px 15px rgba(255, 51, 51, 0.3); }
+            to { box-shadow: 0 4px 25px rgba(255, 51, 51, 0.6); }
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .hero-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+                text-align: center;
+            }
+            
+            .countdown-container {
+                gap: 15px;
+            }
+            
+            .countdown-item {
+                min-width: 80px;
+                padding: 15px;
+            }
+            
+            .countdown-number {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.2rem;
+            }
+            
+            .date-time {
+                font-size: 1.4rem;
+            }
+            
+            .form-container {
+                padding: 30px 20px;
+            }
+            
+            .benefits-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Urgency Banner -->
+    <div class="urgency-banner">
+        🔥 AULA GRATUITA E EXCLUSIVA - VAGAS LIMITADAS - INSCREVA-SE AGORA! 🔥
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="floating-elements">
+            <div class="floating-icon">💡</div>
+            <div class="floating-icon">📈</div>
+            <div class="floating-icon">💰</div>
+            <div class="floating-icon">🎯</div>
+            <div class="floating-icon">⭐</div>
+        </div>
+        <div class="container">
+            <div class="hero-grid">
+                <div class="hero-content">
+                    <h1 class="hero-title">O Jogo da Autoridade</h1>
+                    <div class="live-badge">🔴 AULA AO VIVO</div>
+                    <p class="hero-subtitle">Descubra como usar o <strong>efeito Halo</strong> para influenciar positivamente seus clientes a pagarem mais caro pelos seus serviços</p>
+                    
+                    <div class="date-time-box">
+                        <div class="date-time">29/07 às 19:30</div>
+                        <div class="timezone">Horário de Brasília</div>
+                    </div>
+
+                    <div style="margin-top: 30px;">
+                        <p style="font-size: 1.1rem; margin-bottom: 15px;">✅ 100% Online e Gratuito</p>
+                        <p style="font-size: 1.1rem; margin-bottom: 15px;">✅ Material Exclusivo Incluso</p>
+                        <p style="font-size: 1.1rem; margin-bottom: 15px;">✅ Sessão de Perguntas ao Vivo</p>
+                    </div>
+                </div>
+
+                <div class="form-container">
+                    <h2 class="form-title">Garante Sua Vaga Gratuita!</h2>
+                    <form id="captureForm">
+                        <div class="form-group">
+                            <input type="text" class="form-input" placeholder="Seu nome completo" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" class="form-input" placeholder="Seu melhor e-mail" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="tel" class="form-input" placeholder="WhatsApp (11) 99999-9999" required>
+                        </div>
+                        <button type="submit" class="cta-button">Quero Participar Gratuitamente!</button>
+                        <p class="security-note">🔒 Seus dados estão 100% seguros conosco</p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Countdown Section -->
+    <section class="countdown-section">
+        <div class="container">
+            <h2 style="font-size: 2.2rem; margin-bottom: 10px;">A Aula Começa Em:</h2>
+            <div class="countdown-container" id="countdown">
+                <div class="countdown-item">
+                    <span class="countdown-number" id="days">00</span>
+                    <span class="countdown-label">Dias</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="hours">00</span>
+                    <span class="countdown-label">Horas</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="minutes">00</span>
+                    <span class="countdown-label">Minutos</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="seconds">00</span>
+                    <span class="countdown-label">Segundos</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section class="benefits-section">
+        <div class="container">
+            <h2 class="section-title">O Que Você Vai Aprender</h2>
+            <p class="section-subtitle">Conteúdo exclusivo que vai transformar a forma como você atrai e converte clientes</p>
+            
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-icon">🧠</div>
+                    <h3>Psicologia da Autoridade</h3>
+                    <p>Como ativar o efeito Halo na mente dos seus clientes e ser percebido como especialista número 1 do seu nicho</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">💎</div>
+                    <h3>Estratégia de Preço Premium</h3>
+                    <p>A ciência por trás dos preços altos e como justificar valores elevados sem resistência dos clientes</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">📱</div>
+                    <h3>Instagram de Autoridade</h3>
+                    <p>Como criar conteúdo que posiciona você como autoridade e atrai clientes dispostos a pagar bem</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">🎯</div>
+                    <h3>Posicionamento Magnético</h3>
+                    <p>Técnicas para fazer clientes ideais te procurarem ativamente, sem você precisar "caçar" vendas</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">⚡</div>
+                    <h3>Gatilhos Mentais Avançados</h3>
+                    <p>Os 10 gatilhos mais poderosos para criar autoridade instantânea e acelerar suas vendas</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">📈</div>
+                    <h3>Casos Reais de Sucesso</h3>
+                    <p>Exemplos práticos de profissionais que aplicaram o método e aumentaram seus preços em até 300%</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- Final CTA -->
+    <section style="background: linear-gradient(135deg, #1a1a1a, #2c2c2c); padding: 80px 0; text-align: center; color: white;">
+        <div class="container">
+            <h2 style="font-size: 2.5rem; margin-bottom: 20px; color: #ffa500;">Última Chance de Garantir Sua Vaga!</h2>
+            <p style="font-size: 1.3rem; margin-bottom: 40px; max-width: 600px; margin-left: auto; margin-right: auto;">Não perca a oportunidade de descobrir os segredos que podem revolucionar seu negócio e multiplicar seus ganhos.</p>
+            <a href="#" class="cta-button" style="display: inline-block; max-width: 400px;">Garantir Minha Vaga Gratuita Agora!</a>
+            <p style="margin-top: 30px; opacity: 0.8; font-size: 1.1rem;">⚡ Apenas 200 vagas disponíveis</p>
+            <p style="opacity: 0.8;">📅 29/07 às 19:30 (Horário de Brasília)</p>
+        </div>
+    </section>
+
+    <script>
+        // Countdown Timer para 29/07/2025 às 19:30
+        function updateCountdown() {
+            const targetDate = new Date('2025-07-29T19:30:00-03:00').getTime();
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById('days').textContent = String(days).padStart(2, '0');
+            document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+            document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+            document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+
+            if (distance < 0) {
+                document.getElementById('countdown').innerHTML = '<div style="font-size: 2rem; color: #ff3333;">A AULA JÁ COMEÇOU!</div>';
+            }
+        }
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        // Form submission
+        document.getElementById('captureForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Aqui você pode adicionar a integração com seu sistema de email marketing
+            // Por exemplo: Mailchimp, RD Station, etc.
+            
+            // Simulação de envio
+            const button = this.querySelector('.cta-button');
+            const originalText = button.textContent;
+            
+            button.textContent = 'Processando...';
+            button.disabled = true;
+            
+            setTimeout(() => {
+                button.textContent = '✅ Inscrição Realizada!';
+                button.style.background = '#27ae60';
+                
+                // Aqui você pode redirecionar para uma página de confirmação
+                // window.location.href = 'confirmacao.html';
+                
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.disabled = false;
+                    button.style.background = '';
+                }, 3000);
+            }, 2000);
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Scroll animations
+        function animateOnScroll() {
+            const elements = document.querySelectorAll('.benefit-card, .stat-item');
+            elements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < window.innerHeight - elementVisible) {
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }
+            });
+        }
+
+        // Initialize animation styles
+        document.querySelectorAll('.benefit-card, .stat-item').forEach(element => {
+            element.style.opacity = '0';
+            element.style.transform = 'translateY(30px)';
+            element.style.transition = 'all 0.6s ease-out';
+        });
+
+        window.addEventListener('scroll', animateOnScroll);
+        window.addEventListener('load', animateOnScroll);
+
+        // Auto-focus no primeiro campo do formulário em desktop
+        if (window.innerWidth > 768) {
+            document.querySelector('.form-input').focus();
+        }
+    </script>
+</body>
+</html>
