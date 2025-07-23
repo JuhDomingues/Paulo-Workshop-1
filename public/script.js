@@ -41,7 +41,7 @@ document.getElementById('captureForm').addEventListener('submit', function(e) {
     })
     .then(response => {
         if (response.ok) {
-            window.location.href = 'Página-obrigado.html';
+            window.location.href = 'obrigado.html';
         } else {
             button.textContent = '❌ Erro ao inscrever';
             button.style.background = '#c0392b';
