@@ -13,6 +13,11 @@ app.use(express.urlencoded({ extended: true }));
 // Servir arquivos estáticos da pasta 'public'
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Rota para a página inicial
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'Index.html'));
+});
+
 // Rota para receber os dados do formulário e enviar para o Make.com
 app.post('/inscrever', async (req, res) => {
     const { name, email, phone } = req.body;
@@ -25,7 +30,8 @@ app.post('/inscrever', async (req, res) => {
             phone
         });
         console.log('Inscrição enviada para o Make.com:', { name, email, phone });
-        res.send('Inscrição realizada com sucesso!');
+        // Redireciona para a página de obrigado
+        res.redirect('/Página-obrigado.html');
     } catch (error) {
         console.error('Erro ao enviar para o Make.com:', error.message);
         res.status(500).send('Ocorreu um erro ao processar sua inscrição.');
