@@ -1,6 +1,5 @@
 {
   "version": 2,
-  "public": "public",
   "builds": [
     {
       "src": "server.js",
@@ -11,6 +10,10 @@
     {
       "src": "/inscrever",
       "dest": "server.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/public/$1"
     }
   ]
 }
