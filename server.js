@@ -31,7 +31,7 @@ app.post('/inscrever', async (req, res) => {
         });
         console.log('Inscrição enviada para o Make.com:', { name, email, phone });
         // Redireciona para a página de obrigado
-        res.redirect('/Página-obrigado.html');
+        res.redirect('/obrigado.html');
     } catch (error) {
         console.error('Erro ao enviar para o Make.com:', error.message);
         res.status(500).send('Ocorreu um erro ao processar sua inscrição.');
