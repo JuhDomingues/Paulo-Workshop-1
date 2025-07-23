@@ -11,12 +11,7 @@ const port = process.env.PORT || 3000;
 app.use(express.urlencoded({ extended: true }));
 
 // Servir arquivos estáticos da pasta 'public'
-app.use(express.static('public'));
-
-// Rota para a página inicial
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'Index.html'));
-});
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Rota para receber os dados do formulário e enviar para o Make.com
 app.post('/inscrever', async (req, res) => {
