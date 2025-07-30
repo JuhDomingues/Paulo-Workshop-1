@@ -1,7 +1,7 @@
 
 // Countdown Timer para 29/07/2025 às 19:30
 function updateCountdown() {
-    const targetDate = new Date('2025-07-29T19:30:00-03:00').getTime();
+    const targetDate = new Date('2025-08-12T19:30:00-03:00').getTime();
     const now = new Date().getTime();
     const distance = targetDate - now;
 
